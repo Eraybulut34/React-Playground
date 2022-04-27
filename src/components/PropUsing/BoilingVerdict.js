@@ -1,5 +1,5 @@
 function BoilingVerdict(props) {
-    if (props.geldi == 50) {
+    if (props.geldi === 50) {
         return <p>The water would boil.</p>;
     }
     return <p>The water would not boil.</p>;
