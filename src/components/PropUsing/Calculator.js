@@ -1,4 +1,4 @@
-import React, { useState, Component } from 'react';
+import React from 'react';
 import BoilingVerdict from './BoilingVerdict';
 
 class Calculator extends React.Component {
