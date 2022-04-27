@@ -1,55 +1,56 @@
-import React from 'react';
-import { Table, Button, message } from 'antd';
+import React, { useState, useEffect } from "react";
+import Axios from "axios";
+import { Table } from "antd";
 
-const dataSource = [
-    {
-      key: '1',
-      name: 'Mike',
-      age: 32,
-      address: '10 Downing Street',
-    },
-    {
-      key: '2',
-      name: 'John',
-      age: 42,
-      address: '10 Downing Street',
-    },
-  ];
-  
+function AntdTable() {
+  const [state, setstate] = useState([]);
+  const [loading, setloading] = useState(true);
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    await Axios.get("https://jsonplaceholder.typicode.com/comments").then(
+      res => {
+        setloading(false);
+        setstate(
+          res.data.map(row => ({
+            Name: row.name,
+            Email: row.email,
+            id: row.id
+          }))
+        );
+      }
+    );
+  };
+
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
+      title: "Name",
+      dataIndex: "Name",
+      width: 150
     },
     {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
-    },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-    },
+      title: "Email",
+      dataIndex: "Email",
+      width: 100
+    }
   ];
 
-class AntdTable extends React.Component {
-    
-render() {
-return (
-<div>
-<Table columns={columns} dataSource={dataSource} />
-<Button type="primary" onClick={() => {
-message.info('Click on left button.');
-}}>Left Button</Button>
-<Button type="primary" onClick={() => {
-message.info('Click on right button.');
-}}>Right Button</Button>
-</div>
-);
-}
+  return (
+    <div>
+      {loading ? (
+        "Loading"
+      ) : (
+        <Table
+          columns={columns}
+          dataSource={state}
+          pagination={{ pageSize: 50 }}
+          scroll={{ y: 240 }}
+        />
+      )}
+    </div>
+  );
 }
 
 export default AntdTable;
-
